@@ -17,9 +17,9 @@ test_ports = [80]
 
 for i in range(len(test_ports)):
     # SYN scan all ports, ans is answered
-    ans, unans = scapy.sr( scapy.IP(dst=DST_IP) / scapy.TCP(dport = test_ports[i], flags="S") ) # SYN scan all ports
-    ans.nsummary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA", prn=lambda s,r: r.sprintf("%TCP.sport% open"))
+    ans, unans = scapy.sr( scapy.IP(dst=DST_IP) / scapy.TCP(dport = test_ports[i], flags="S"), timeout = 2 ) # SYN scan all ports
+    # rn: timeout needed to keep it from going on forever. is this bc of the server IP or smth else?
+    ans.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA", prn=lambda s,r: r.sprintf("%TCP.sport% open"))
 
-print("done")
 
 
