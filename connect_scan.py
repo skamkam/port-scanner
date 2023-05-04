@@ -15,18 +15,20 @@ starttime = time()
 
 DST_IP = "131.229.72.13"
 
-test_ports = [x for x in range(1, 80)]
-# TO DO: how to count the number of ports that are open
+open_port_counter = 0
+
+# TO DO: link this to the port gen that we pull from main
+test_ports = port_gen(False, True)
 
 def checkport(port):
+    global open_port_counter # allows funct to change it
     addr = (DST_IP, port)
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connected = client.connect_ex(addr)
     if connected == 0: # 0 means it connected successfully
         service = socket.getservbyport(port)
+        open_port_counter += 1
         print(str(port) + "/tcp\topen\t" + service)
-        return 1
-    return 0
 
 threads = []
 
@@ -39,5 +41,4 @@ for port in range(len(threads)):
 for port in range(len(threads)):
     threads[port].join()
 
-print("scan done! 1 IP address (" + str(1) + " host up) scanned in "  + str(time() - starttime) + " seconds")
-# cut off the decimal places; str(1) is placeholder for counter of ports that are up
+print("scan done! 1 IP address (" + str(open_port_counter) + " host up) scanned in "  + '%.2f'%(time() - starttime) + " seconds")
