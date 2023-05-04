@@ -5,6 +5,8 @@
 #    - subset: TRUE scans only well-known TCP ports 0-1023, FALSE scans all ports 0-65535
 #    - order: TRUE scans in order from 0-65535, FALSE scans in random order
 
+#    eventually we want keywords mode: normal/syn/fin, order: order/random, ports: all/known
+
 import random
 
 def port_gen(subset, order):

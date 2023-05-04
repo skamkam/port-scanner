@@ -1,8 +1,6 @@
 # Sarah Kam and Mai Klooster
 # Smith College CSC251 Final Project: Port Scanner
 # Test server: glasgow.smith.edu, IP: 131.229.72.13
-# References:
-#       https://scapy.readthedocs.io/en/latest/usage.html#syn-scans
 
 import socket
 import scapy.all as scapy
