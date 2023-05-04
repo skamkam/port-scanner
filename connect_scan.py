@@ -1,10 +1,6 @@
 # Sarah Kam and Mai Klooster
 # Smith College CSC251 Final Project: Port Scanner
 # Test server: glasgow.smith.edu, IP: 131.229.72.13
-# TESTING WITH SOCKET!
-# References:
-#       https://scapy.readthedocs.io/en/latest/usage.html#syn-scans
-#       https://stackoverflow.com/questions/72586242/making-a-connection-with-python-socket-programming-taking-an-extremely-long-time
 
 import socket
 from time import time
