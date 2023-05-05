@@ -1,22 +1,22 @@
 # Sarah Kam and Mai Klooster
 # Filename: port_generation.py
 
-#    Generates a list of ports for the scanner to iterate over
-#    - subset: TRUE scans only well-known TCP ports 0-1023, FALSE scans all ports 0-65535
-#    - order: TRUE scans in order from 0-65535, FALSE scans in random order
-
-#    eventually we want keywords mode: normal/syn/fin, order: order/random, ports: all/known
-
 import random
 
 def port_gen(subset, order):
-    if subset:
-        if order:
+    """
+    Generates a list of ports according to the user's input options
+    - subset: "known" scans only well-known TCP ports 0-1023, "all" scans all ports 0-65535
+    - order: "order" scans in order from 0 to higest, "random" scans randomly
+    """
+    if subset == "known":
+        if order == "order":
             return [x for x in range(1024)]
-        else: # return list of randomly ordered 0-1023
+        elif order == "random":
             return [random.sample(range(1024), k=1024)]
-    else:
-        if order:
+        
+    elif subset == "all":
+        if order == "order":
             return [x for x in range(65536)]
-        else: # return list of randomly ordered 0-65536
+        elif order == "random":
             return [random.sample(range(65536), k=65536)]
