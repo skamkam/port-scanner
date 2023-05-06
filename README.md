@@ -7,9 +7,7 @@ Test server: glasgow.smith.edu
 ## List of all files used:
 * main.py
 * port_generation.py
-* connect_scan.py
-* syn_scan.py
-* fin_scan.py
+* scanners.py
 
 ## How to use: Command line
 > Command line usage information
