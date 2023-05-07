@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     dst_ip = "131.229.72.13"
     #dst_ip = "131.229.234.91" # mai's computer
-    mode = "syn"
+    mode = "fin"
     order = "order"
     subset = "known"
 
@@ -48,6 +48,7 @@ if __name__ == "__main__":
     print("Starting port scan with mode '" + mode + "' at\t" + strftime("%Y-%m-%d %H:%M %Z", localtime()) )
 
     test_ports = port_gen(subset, order)
+    test_ports = [22, 80, 443, 999]
 
     open_ports = scan_port(mode, dst_ip, test_ports)
     num_open_ports = len(open_ports)
