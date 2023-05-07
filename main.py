@@ -48,7 +48,7 @@ if __name__ == "__main__":
     print("Starting port scan with mode '" + mode + "' at\t" + strftime("%Y-%m-%d %H:%M %Z", localtime()) )
 
     test_ports = port_gen(subset, order)
-    test_ports = [22, 80, 443, 999]
+    test_ports = [22, 80, 443]
 
     open_ports = scan_port(mode, dst_ip, test_ports)
     num_open_ports = len(open_ports)

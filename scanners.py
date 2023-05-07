@@ -41,8 +41,9 @@ def fin_scan(dst_ip, port):
     If there is no response
     """
     global open_ports
-    p = scapy.sr1( scapy.IP(dst=dst_ip) / scapy.TCP(dport=port,flags="F"), timeout=2, verbose=0 )
-    if p != None: # if there is a response (RST), means the port is closed... so if there isn't a response, port is open
+    p = scapy.sr1( scapy.IP(dst=dst_ip) / scapy.TCP(dport=port,flags="F"), timeout=5, verbose=0 )
+    print(p)
+    if p == None: # if no response, port is open
         print(str(port) + "is open")
         open_ports.append(port)
 
