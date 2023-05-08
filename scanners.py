@@ -18,9 +18,10 @@ def con_scan(dst_ip, port):
     global open_ports # allows funct to change it
     addr = (dst_ip, port)
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    connected = client.connect_ex(addr)
+    connected = client.connect_ex(addr) # connected is an integer describing the connect state (0 successful, else other int)
     if connected == 0: # 0 means it connected successfully
         open_ports.append(port)
+        client.close() # close the socket
 
 def syn_scan(dst_ip, port):
     """
@@ -34,6 +35,7 @@ def syn_scan(dst_ip, port):
     if p != None: # if we get a response from the SYN pkt sent to the port
         if p.haslayer(scapy.TCP) and (p.getlayer(scapy.TCP).flags & 2): # check that the response has TCP flag SA, coded 2
             open_ports.append(port)
+    scapy.sr1( scapy.IP(dst=dst_ip) / scapy.TCP(dport=port,flags="AR") , timeout=2, verbose=0 ) # sends RST to port to finish
 
 def fin_scan(dst_ip, port):
     """
@@ -42,7 +44,7 @@ def fin_scan(dst_ip, port):
     """
     global open_ports
     p = scapy.sr1( scapy.IP(dst=dst_ip) / scapy.TCP(dport=port,flags="F"), timeout=5, verbose=0 )
-    print(p)
+    p.show()
     if p == None: # if no response, port is open
         print(str(port) + "is open")
         open_ports.append(port)

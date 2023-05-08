@@ -13,10 +13,11 @@ def port_gen(subset, order):
         if order == "order":
             return [x for x in range(1024)]
         elif order == "random":
-            return [random.sample(range(1024), k=1024)]
+            return random.sample(range(1024), k=1024)
         
     elif subset == "all":
         if order == "order":
             return [x for x in range(65536)]
         elif order == "random":
-            return [random.sample(range(65536), k=65536)]
+            return random.sample(range(65536), k=65536)
+ 
