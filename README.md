@@ -6,6 +6,7 @@ Test server: glasgow.smith.edu
 
 ## List of all files used:
 * main.py
+* cmd_options.py
 * port_generation.py
 * scanners.py
 
