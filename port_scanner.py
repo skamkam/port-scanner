@@ -2,20 +2,6 @@
 # Smith College CSC251 Final Project: Port Scanner
 # Test server: glasgow.smith.edu, IP: 131.229.72.13
 
-"""
-Code for the actual project call
-
-Import user's options from command line: Python3 port_scanner.py [-options] target_ip
-Options:
-    - mode [normal/syn/fin]
-    - order [order/random]
-    - ports [all/known]
-
-organize such that connect scan and syn scan are called depending on user choice
-
-TO DO: implement fin scan, modify check_alive so that if the target_ip is invalid it exits
-"""
-
 from time import time, strftime, localtime
 import scapy.all as scapy
 import socket
