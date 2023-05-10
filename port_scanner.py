@@ -13,7 +13,7 @@ Options:
 
 organize such that connect scan and syn scan are called depending on user choice
 
-TO DO: implement fin scan, modify check_alive so that if the dst_ip is invalid it exits
+TO DO: implement fin scan, modify check_alive so that if the target_ip is invalid it exits
 """
 
 from time import time, strftime, localtime
@@ -23,58 +23,62 @@ from port_generation import port_gen
 from scanners import scan_port
 from cmd_options import set_options
 
-#from syn_scan import *
 
-def check_alive(dst_ip):
+def check_alive(target_ip):
     """
     ICMP ping to check if a host at a destination IP is alive
     Prints a message if the target host is not alive, and exits the program
+    Prints a dif message if the IP address is bad, and exits the program
     """
-    ans = scapy.sr1( scapy.IP(dst=dst_ip) / scapy.ICMP(), timeout=3, verbose=0 )
-    if ans == None: # sr1 returns "None" if timeout before response from host
-        print("Target host is not alive; try a different IP")
+    try:
+        ans = scapy.sr1( scapy.IP(dst=target_ip) / scapy.ICMP(), timeout=3, verbose=0 )
+        if ans == None: # sr1 returns "None" if timeout before response from host
+            print("Target host is not alive; try a different IP")
+            raise SystemExit
+    except:
+        print("Bad IP address, try again")
         raise SystemExit
-    """
-    TODO: figure out what happens if there's an error in dst_ip, and make it
-            so that if that happens the program prints "invalid ip" and exits
-    """
+
 
 def main():
     starttime = time()
 
-# FOLLOWING 4 LINES ARE FOR TESTING ONLY
-    dst_ip = "131.229.72.13"
-    mode = "normal"
-    order = "order"
-    subset = "known"
-
-    # get the cmd line args and parse them into mode, order, subset, dst_ip
+    # get the cmd line args and parse them into mode, order, subset, target_ip
     user_args = set_options()
-    print(user_args)
     mode = user_args[0]
     order = user_args[1]
     subset = user_args[2]
-    dst_ip = user_args[3]
+    target_ip = user_args[3]
 
-
-    check_alive(dst_ip) # if check_alive() doesn't stop the program, then target's alive
-    # implement a thing for "check if the ip is valid" in check_alive, then exit program
+    check_alive(target_ip) # if check_alive() doesn't stop the program, then target's alive
 
     print("Starting port scan with mode '" + mode + "' at\t" + strftime("%Y-%m-%d %H:%M %Z", localtime()) )
 
     test_ports = port_gen(subset, order)
-
-    open_ports = scan_port(mode, dst_ip, test_ports)
+    open_ports = scan_port(mode, target_ip, test_ports)
     num_open_ports = len(open_ports)
 
+    if num_open_ports == len(test_ports): # in case FIN scan doesn't work
+        print("Scan indicates all " + len(test_ports) + " ports are open; likely there is a firewall preventing '" + mode + "' type scans.")
+        raise SystemExit
+
     # printing the header lines
-    print("Interesting ports on " + str(dst_ip) + ":")
+    print("Interesting ports on " + str(target_ip) + ":")
     print("Not shown: " + str( len(test_ports) - num_open_ports ) + " closed ports")
-    print("PORT\tSTATE\tSERVICE")
+    print("PORT\t  STATE\tSERVICE")
 
     for port in open_ports: # print: "22\tcp   open    ssh"
-        service = socket.getservbyport(port)
-        print( str(port) + "/tcp\topen\t" + service)
+        try:
+            service = socket.getservbyport(port)
+        except: # if getservbyport has no info on the port, ie 8080, print UNKNOWN
+            service = "UNKNOWN"
+        # print it nicely with good spacing, according to the length of str(port)
+        if len(str(port)) < 4:
+            print( str(port) + "/tcp\t  open\t" + service)
+        elif len(str(port)) == 4:
+            print( str(port) + "/tcp  open\t" + service)
+        elif len(str(port)) == 5:
+            print( str(port) + "/tcp open\t" + service)
 
     print("\nScan done! 1 IP address (" + str(num_open_ports) + " port(s) up) scanned in "  + '%.2f'%(time() - starttime) + " seconds")
 

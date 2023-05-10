@@ -1,7 +1,6 @@
 # Sarah Kam and Mai Klooster
 # Filename: cmd_options.py
 
-import sys
 import argparse
 
 def set_options():
@@ -17,7 +16,7 @@ def set_options():
     scanmode = ""
     port_order = ""
     port_subset = ""
-    dst_ip = ""
+    target_ip = ""
 
     try:
         if args.mode == "normal":
@@ -54,17 +53,11 @@ def set_options():
     except:
         print("Please specify port subset: known or all")
 
-    # TODO: throw exception if the user doesn't put a valid IP address
     try:
-        dst_ip = args.target_ip
-        # dst_ip = sys.argv[-1]
+        target_ip = args.target_ip
+        # target_ip = sys.argv[-1]
     except:
         print("There was an error reading the IP address. Please enter a valid IP address")
 
-    print("scanmode: "+ scanmode)
-    print("port_order: "+ port_order)
-    print("port_subset: "+ port_subset)
-    print("target ip: "+ dst_ip)
-
-    return(scanmode, port_order, port_subset, dst_ip)
+    return(scanmode, port_order, port_subset, target_ip)
     
